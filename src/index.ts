@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js"
-import * as sketch from "./app/sketch"
+import * as sketch from "./app"
 
 async function setup() {
   await new Promise((resolve) => {
