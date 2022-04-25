@@ -7,3 +7,8 @@
 3. Start the project in watch mode with `npm run start`
 4. Add your assets in `public/assets` and referency it the `setup()` method of the `src/index.ts` file.
 5. Read the code already present in `src` and start coding! Enjoy :)
+
+## TODO
+
+- feu de bois
+- algo de génération de map: lignes de points (2~4 points par ligne), relier les plus proches en partant des trois points les plus bas, chaque point peut faire 1~2 liaisons.
