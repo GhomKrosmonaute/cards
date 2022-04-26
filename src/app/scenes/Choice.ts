@@ -7,7 +7,9 @@ export interface ChoiceItem {
 }
 
 export default class Choice extends Container {
-  constructor(public game: Game, public choices: ChoiceItem[]) {
+  public choices: ChoiceItem[] = []
+
+  constructor(public game: Game) {
     super()
 
     game.addChild(this)

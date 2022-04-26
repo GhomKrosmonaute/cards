@@ -1,12 +1,14 @@
 import { Container } from "pixi.js"
-import Game from "../Game"
-import Card from "../items/Card"
 import { RelicEffect } from "../items/Relic"
+import Card from "../items/Card"
+import Game from "../Game"
 
 export const DEFAULT_CHOICE_SIZE = 3
 
 export default class CardChoice extends Container {
-  constructor(public game: Game, public cards: Card[]) {
+  public cards: Card[] = []
+
+  constructor(public game: Game) {
     super()
 
     game.addChild(this)
