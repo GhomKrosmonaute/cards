@@ -3,13 +3,21 @@ import { RelicEffect } from "../items/Relic"
 import Card from "../items/Card"
 import Game from "../Game"
 
+import Scene from "../utils/Scene"
+
 export const DEFAULT_CHOICE_SIZE = 3
 
-export default class CardChoice extends Container {
+export default class CardChoice extends Scene {
   public cards: Card[] = []
 
-  constructor(public game: Game) {
-    super()
+  constructor(game: Game) {
+    super(game, {
+      name: "CardChoice",
+      title: {
+        en: "Card choice",
+        fr: "Choix de carte",
+      },
+    })
 
     game.addChild(this)
 
@@ -29,6 +37,6 @@ export default class CardChoice extends Container {
   }
 
   generate() {
-    // write all buttons and listen clicks (pixi)
+    super.generate()
   }
 }

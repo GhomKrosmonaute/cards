@@ -31,6 +31,7 @@ export default class Game extends Container {
   public shop?: Shop
 
   public level = 0
+  public lang = document.documentElement.lang
 
   constructor() {
     super()
@@ -39,11 +40,7 @@ export default class Game extends Container {
   }
 
   testFight() {
-    this.fight = new Fight(this, {
-      onFinish: () => {
-        delete this.fight
-      },
-    })
+    this.fight = new Fight(this)
   }
 
   startScene(scene: Container) {}

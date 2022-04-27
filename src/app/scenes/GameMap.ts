@@ -1,4 +1,6 @@
-import { Container } from "pixi.js"
+import { Container, IPointData } from "pixi.js"
+import { nearly } from "../utils/math"
+import { getHeight, getWidth } from "../../core"
 
 import CardChoice from "./CardChoice"
 import WoodFire from "./WoodFire"
@@ -9,10 +11,7 @@ import Shop from "./Shop"
 
 import Game from "../Game"
 
-// algo de génération de map:
-// lignes de points (2~5 points par ligne),
-// relier les plus proches en partant des trois points les plus bas,
-// chaque point peut faire 1~2 liaisons.
+import Scene from "../utils/Scene"
 
 const MAX_COL_COUNT = 5
 
@@ -21,8 +20,10 @@ export function getLineCount(level: number) {
 }
 
 export function getColumnCount() {
-  // todo: use MAX_COL_COUNT
-  return 2 + Math.floor(Math.random() * 3)
+  return Math.floor(
+    Math.floor(MAX_COL_COUNT / 0.3) +
+      Math.random() * Math.ceil(MAX_COL_COUNT / 0.7)
+  )
 }
 
 export function getNextPointCount() {
@@ -30,11 +31,13 @@ export function getNextPointCount() {
 }
 
 export interface GameMapPoint {
-  scene: SceneName
+  sceneName: GameMapSceneName
+  visited: boolean
   nextPoints: GameMapPoint[]
+  position: IPointData
 }
 
-export type SceneName =
+export type GameMapSceneName =
   | "Choice"
   | "Fight"
   | "Chest"
@@ -43,36 +46,24 @@ export type SceneName =
   | "WoodFire"
   | "Elite"
 
-export default class GameMap extends Container {
+export default class GameMap extends Scene {
   public points: GameMapPoint[][] = []
 
-  constructor(public game: Game) {
-    super()
+  constructor(game: Game) {
+    super(game, {
+      name: "GameMap",
+      title: {
+        en: "Map",
+        fr: "Carte",
+      },
+    })
 
     game.addChild(this)
 
     this.generate()
   }
 
-  generate() {
-    const lineCount = getLineCount(this.game.level)
-
-    for (let lineIndex = 0; lineIndex < lineCount; lineIndex++) {
-      const line: GameMapPoint[] = []
-      const colCount = getColumnCount()
-
-      for (let i = 0; i < colCount; i++) {
-        line.push({
-          nextPoints: [],
-          scene: this.getRandomScene(),
-        })
-      }
-
-      this.points.push(line)
-    }
-  }
-
-  getRandomScene(): SceneName {
+  getRandomSceneName(): GameMapSceneName {
     if (Math.random() < 0.1) {
       return "Chest"
     } else if (Math.random() < 0.1) {
@@ -85,6 +76,38 @@ export default class GameMap extends Container {
         : "WoodFire"
     } else {
       return "Fight"
+    }
+  }
+
+  generate() {
+    super.generate()
+
+    const lineCount = getLineCount(this.game.level)
+
+    for (let lineIndex = 0; lineIndex < lineCount; lineIndex++) {
+      const line: GameMapPoint[] = []
+      const colCount = getColumnCount()
+
+      for (let i = 0; i < colCount; i++) {
+        line.push({
+          nextPoints: [],
+          visited: false,
+          sceneName: this.getRandomSceneName(),
+          position: {
+            x: nearly(
+              i * (getWidth() / colCount) + getWidth() / colCount / 2,
+              getWidth() / (colCount * 3)
+            ),
+            y: nearly(
+              lineIndex * (getHeight() / lineCount) +
+                getHeight() / lineCount / 2,
+              getHeight() / (lineCount * 3)
+            ),
+          },
+        })
+      }
+
+      this.points.push(line)
     }
   }
 }
