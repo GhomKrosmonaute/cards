@@ -1,9 +1,12 @@
 import { Container } from "pixi.js"
 import { app } from "../core"
 
+import CardChoice from "./scenes/CardChoice"
 import Inventory from "./scenes/Inventory"
+import WoodFire from "./scenes/WoodFire"
 import GameMap from "./scenes/GameMap"
 import Choice from "./scenes/Choice"
+import Chest from "./scenes/Chest"
 import Fight from "./scenes/Fight"
 import Shop from "./scenes/Shop"
 
@@ -11,12 +14,13 @@ import Potion from "./items/Potion"
 import Relic from "./items/Relic"
 import Card from "./items/Card"
 
+import Hook from "./utils/Hook"
 import Div from "./utils/Div"
-import CardChoice from "./scenes/CardChoice"
-import WoodFire from "./scenes/WoodFire"
-import Chest from "./scenes/Chest"
 
 export default class Game extends Container {
+  public hp = new Hook(100)
+  public maxHp = new Hook(100)
+
   public cards = new Div<Card>(this)
   public relics = new Div<Relic>(this)
   public potions = new Div<Potion>(this)
