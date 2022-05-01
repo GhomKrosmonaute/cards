@@ -27,8 +27,6 @@ export default class Fight extends Scene {
       },
     })
 
-    game.addChild(this)
-
     this.generate()
   }
 
@@ -44,6 +42,8 @@ export default class Fight extends Scene {
 
   generate() {
     super.generate()
+    this.addChild(this.player)
+    this.addChild(...this.enemies)
     this.distribute()
   }
 }

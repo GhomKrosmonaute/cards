@@ -20,8 +20,6 @@ export default class Shop extends Scene {
       },
     })
 
-    game.addChild(this)
-
     this.generate()
   }
 

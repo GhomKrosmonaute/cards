@@ -23,4 +23,8 @@ export default class Inventory extends Scene {
       },
     })
   }
+
+  generate() {
+    super.generate()
+  }
 }

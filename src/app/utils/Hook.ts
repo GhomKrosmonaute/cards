@@ -1,6 +1,8 @@
 import { BaseEventNames, EventEmitter } from "@ghom/event-emitter"
 
 export interface HookEventNames<ValueType> extends BaseEventNames {
+  automaticChange: [oldValue: ValueType, newValue: ValueType]
+  manualChange: [oldValue: ValueType, newValue: ValueType]
   change: [oldValue: ValueType, newValue: ValueType]
 }
 
@@ -17,6 +19,7 @@ export default class Hook<ValueType> extends EventEmitter<
     if (newValue !== oldValue) {
       this._value = newValue
 
+      this.emit("manualChange", oldValue, newValue).catch(console.error)
       this.emit("change", oldValue, newValue).catch(console.error)
     }
   }
@@ -25,16 +28,20 @@ export default class Hook<ValueType> extends EventEmitter<
     return this._value
   }
 
-  syncWith(hook: Hook<ValueType>, load?: boolean): ValueType {
-    if (load) this._value = hook._value
+  sync(hook: Hook<ValueType>, loadFromTarget?: boolean): ValueType {
+    if (loadFromTarget) this._value = hook._value
     else hook._value = this._value
 
-    hook.on("change", (oldValue, newValue) => {
+    hook.on("manualChange", (oldValue, newValue) => {
       this._value = newValue
+      this.emit("change", oldValue, newValue).catch(console.error)
+      this.emit("automaticChange", oldValue, newValue).catch(console.error)
     })
 
     this.on("change", (oldValue, newValue) => {
       hook._value = newValue
+      hook.emit("change", oldValue, newValue).catch(console.error)
+      hook.emit("automaticChange", oldValue, newValue).catch(console.error)
     })
 
     return this._value

@@ -58,8 +58,6 @@ export default class GameMap extends Scene {
       },
     })
 
-    game.addChild(this)
-
     this.generate()
   }
 

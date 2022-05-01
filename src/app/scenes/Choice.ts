@@ -19,8 +19,6 @@ export default class Choice extends Scene {
       },
     })
 
-    game.addChild(this)
-
     this.generate()
   }
 

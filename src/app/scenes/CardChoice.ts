@@ -19,8 +19,6 @@ export default class CardChoice extends Scene {
       },
     })
 
-    game.addChild(this)
-
     this.generate()
   }
 

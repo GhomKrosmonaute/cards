@@ -12,4 +12,8 @@ export default class WoodFire extends Scene {
       },
     })
   }
+
+  generate() {
+    super.generate()
+  }
 }

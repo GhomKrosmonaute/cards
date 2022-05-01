@@ -45,6 +45,7 @@ export default class Game extends Container {
 
   testFight() {
     this.fight = new Fight(this)
+    this.addChild(this.fight)
   }
 
   startScene(scene: Container) {}
