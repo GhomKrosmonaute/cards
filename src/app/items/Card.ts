@@ -1,4 +1,4 @@
-import { Container, Sprite } from "pixi.js"
+import { Container, Graphics, Sprite } from "pixi.js"
 
 import Game from "../Game"
 
@@ -20,6 +20,9 @@ export interface CardOptions {
   onUsage?: (card: Card) => unknown
 }
 
+export const CARD_WIDTH = 100
+export const CARD_HEIGHT = 150
+
 export default class Card extends Container {
   constructor(
     public game: Game,
@@ -27,6 +30,17 @@ export default class Card extends Container {
     public level = 0
   ) {
     super()
+
+    this.generate()
+  }
+
+  generate() {
+    const bg = new Graphics()
+      .beginFill(0xffffff)
+      .drawRect(CARD_WIDTH / 2, CARD_HEIGHT / 2, CARD_WIDTH, CARD_HEIGHT)
+      .endFill()
+
+    this.addChild(bg)
   }
 
   discard() {
